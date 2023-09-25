@@ -46,7 +46,6 @@ public class EmailService
   
         }
         
-        
         message.Body = multipart;
 
         using (var client = new SmtpClient())

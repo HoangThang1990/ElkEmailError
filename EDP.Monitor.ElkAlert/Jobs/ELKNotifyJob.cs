@@ -98,6 +98,7 @@ public class ELKNotifyJob : IJob
                 //Gửi mail
                 try
                 {
+                    _logger.LogInformation($"Send email of job {jobName} To: {jobData.EmailTo} - CC: {jobData.EmailCC} - Total rows: {count}");
                     await EmailService.SendEmailWithAttachmentAsync(
                      jobData.EmailTo,
                      jobData.EmailCC,
@@ -121,6 +122,7 @@ public class ELKNotifyJob : IJob
                 //Gửi email lỗi
                 try
                 {
+                    _logger.LogInformation($"Send email of job {jobName} To: {jobData.EmailErrorJobTo} - Error: {downloadResponse.ReasonPhrase}");
                     await EmailService.SendEmailWithAttachmentAsync(
                         jobData.EmailErrorJobTo,
                         string.Empty,

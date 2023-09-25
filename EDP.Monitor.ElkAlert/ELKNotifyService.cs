@@ -54,6 +54,8 @@ public class ELKNotifyService : IHostedService
                 }
             }
         }
+
+        await Scheduler.Start(cancellationToken);
     }
 
     private ITrigger CreateTrigger(ELKNotifyJobSchedule scheduler)
@@ -70,7 +72,7 @@ public class ELKNotifyService : IHostedService
     {
         return JobBuilder
         .Create(typeof(ELKNotifyJob))
-        .UsingJobData("JobData", JsonConvert.SerializeObject(scheduler))
+        .UsingJobData("JobData", JsonConvert.SerializeObject(scheduler.JobData))
         .UsingJobData("JobName", name)
         .WithIdentity(scheduler.Name)
         .WithDescription(scheduler.Name)
