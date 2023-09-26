@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -14,6 +15,11 @@ public class StandardHttpClient : IHttpClient
     {
         try
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+            | SecurityProtocolType.Tls11 
+            | SecurityProtocolType.Tls12 
+            | SecurityProtocolType.Ssl3;
+
             using (var handler = new HttpClientHandler()
             {
                 CookieContainer = new System.Net.CookieContainer(),
@@ -55,6 +61,11 @@ public class StandardHttpClient : IHttpClient
         T result = Activator.CreateInstance<T>();
         try
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+            | SecurityProtocolType.Tls11 
+            | SecurityProtocolType.Tls12 
+            | SecurityProtocolType.Ssl3;
+            
             using (var handler = new HttpClientHandler()
             {
                 CookieContainer = new System.Net.CookieContainer(),
