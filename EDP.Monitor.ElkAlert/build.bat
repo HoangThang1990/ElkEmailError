@@ -1,0 +1,1 @@
+docker build -t edp-monitor-alert:1.0 .
