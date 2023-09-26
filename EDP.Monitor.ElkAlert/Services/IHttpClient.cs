@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 public class StandardHttpClient : IHttpClient
 {
-     private readonly ILogger<StandardHttpClient> _logger;
+    private readonly ILogger<StandardHttpClient> _logger;
 
     public StandardHttpClient(ILogger<StandardHttpClient> logger)
     {
@@ -14,20 +14,27 @@ public class StandardHttpClient : IHttpClient
     {
         try
         {
-            using(var handler = new HttpClientHandler(){
-            CookieContainer = new System.Net.CookieContainer(),
+            using (var handler = new HttpClientHandler()
+            {
+                CookieContainer = new System.Net.CookieContainer(),
+                ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
+                {
+                    return true;
+                }
             })
             {
-                using(var client = new HttpClient(handler))
+                using (var client = new HttpClient(handler))
                 {
-                    client.BaseAddress= new Uri(uri);
+                    client.BaseAddress = new Uri(uri);
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                    if(headers != null && headers.Count > 0){
-                        foreach(var header in headers){
-                            if(string.IsNullOrEmpty(header.Key) || string.IsNullOrEmpty(header.Value)) continue;
+                    if (headers != null && headers.Count > 0)
+                    {
+                        foreach (var header in headers)
+                        {
+                            if (string.IsNullOrEmpty(header.Key) || string.IsNullOrEmpty(header.Value)) continue;
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
-                            
+
                         }
                     }
 
@@ -35,7 +42,7 @@ public class StandardHttpClient : IHttpClient
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
         }
@@ -48,38 +55,48 @@ public class StandardHttpClient : IHttpClient
         T result = Activator.CreateInstance<T>();
         try
         {
-            using(var handler = new HttpClientHandler(){
-            CookieContainer = new System.Net.CookieContainer(),
+            using (var handler = new HttpClientHandler()
+            {
+                CookieContainer = new System.Net.CookieContainer(),
+                ServerCertificateCustomValidationCallback = (request, cert, chain, errors) =>
+                {
+                    return true;
+                }
             })
             {
-                using(var client = new HttpClient(handler))
+                using (var client = new HttpClient(handler))
                 {
-                    client.BaseAddress= new Uri(uri);
+                    client.BaseAddress = new Uri(uri);
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                    if(headers != null && headers.Count > 0){
-                        foreach(var header in headers){
-                            if(string.IsNullOrEmpty(header.Key) || string.IsNullOrEmpty(header.Value)) continue;
+                    if (headers != null && headers.Count > 0)
+                    {
+                        foreach (var header in headers)
+                        {
+                            if (string.IsNullOrEmpty(header.Key) || string.IsNullOrEmpty(header.Value)) continue;
                             client.DefaultRequestHeaders.Add(header.Key, header.Value);
-                            
+
                         }
                     }
 
-                    var response =  await client.SendAsync(new HttpRequestMessage(){
+                    var response = await client.SendAsync(new HttpRequestMessage()
+                    {
                         Method = HttpMethod.Post,
                         Content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")
                     });
 
-                    if(response != null){
+                    if (response != null)
+                    {
                         var json = await response.Content.ReadAsStringAsync();
-                        if(!string.IsNullOrEmpty(json)){
+                        if (!string.IsNullOrEmpty(json))
+                        {
                             result = JsonConvert.DeserializeObject<T>(json);
                         }
                     }
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
         }
@@ -89,7 +106,8 @@ public class StandardHttpClient : IHttpClient
 
 }
 
-public interface IHttpClient{
-    Task<HttpResponseMessage> GetAsync(string uri, Dictionary<string,string> headers = null);
+public interface IHttpClient
+{
+    Task<HttpResponseMessage> GetAsync(string uri, Dictionary<string, string> headers = null);
     Task<T> PostAsync<T>(string uri, object data = null, Dictionary<string, string> headers = null);
 }
