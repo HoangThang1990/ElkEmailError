@@ -1,1 +1,2 @@
-docker build -t edp-monitor-alert:1.0 .
+cd bin/Release/net7.0/publish/
+docker build -t hnthang/elkemailserror:1.1 .

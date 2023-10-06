@@ -63,3 +63,4 @@
 /workspaces/ElkEmailError/EDP.Monitor.ElkAlert/obj/Release/net7.0/EDP.Monitor.ElkAlert.pdb
 /workspaces/ElkEmailError/EDP.Monitor.ElkAlert/obj/Release/net7.0/EDP.Monitor.ElkAlert.genruntimeconfig.cache
 /workspaces/ElkEmailError/EDP.Monitor.ElkAlert/obj/Release/net7.0/ref/EDP.Monitor.ElkAlert.dll
+/workspaces/ElkEmailError/EDP.Monitor.ElkAlert/bin/Release/net7.0/Dockerfile

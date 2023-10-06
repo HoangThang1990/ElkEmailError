@@ -15,4 +15,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Quartz" Version="3.7.0" />
   </ItemGroup>
+
+   <ItemGroup>
+      <None Update="Dockerfile">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+  </ItemGroup>
 </Project>

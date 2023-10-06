@@ -1,3 +1,4 @@
+/workspaces/ElkEmailError/EDP.Monitor.ElkAlert/bin/Release/net7.0/publish/Dockerfile
 /workspaces/ElkEmailError/EDP.Monitor.ElkAlert/bin/Release/net7.0/publish/EDP.Monitor.ElkAlert
 /workspaces/ElkEmailError/EDP.Monitor.ElkAlert/bin/Release/net7.0/publish/appsettings.Development.json
 /workspaces/ElkEmailError/EDP.Monitor.ElkAlert/bin/Release/net7.0/publish/appsettings.json
