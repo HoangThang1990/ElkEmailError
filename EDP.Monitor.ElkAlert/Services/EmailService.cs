@@ -27,7 +27,7 @@ public class EmailService
         message.Subject = subject;
 
         var multipart = new Multipart("mixed");
-        var textPart = new TextPart("plain")
+        var textPart = new TextPart("html")
         {
             Text = body
         };

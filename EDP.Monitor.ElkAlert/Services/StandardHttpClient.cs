@@ -102,7 +102,7 @@ public class StandardHttpClient : IHttpClient
                 var json = await response.Content.ReadAsStringAsync();
                 if (!string.IsNullOrEmpty(json))
                 {
-                    _logger.LogInformation($"Post {uri} - headers: {JsonConvert.SerializeObject(headers)} - data: {JsonConvert.SerializeObject(data)} - response data: {json}");
+                    _logger.LogInformation($"Post {uri} - headers: {JsonConvert.SerializeObject(headers)} - data: {JsonConvert.SerializeObject(data)}");
                     result = JsonConvert.DeserializeObject<T>(json);
                 }
             }
