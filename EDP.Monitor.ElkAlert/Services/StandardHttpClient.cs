@@ -50,19 +50,6 @@ public class StandardHttpClient : IHttpClient
         return null;
     }
 
-    private void IgnoreServerCertificateValidation()
-    {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                | SecurityProtocolType.Tls11
-                | SecurityProtocolType.Tls12
-                | SecurityProtocolType.Ssl3;
-
-        ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) =>
-        {
-            return true;
-        };
-    }
-
     public async Task<T> PostAsync<T>(string uri, object data, Dictionary<string, string> headers = null)
     {
         T result = Activator.CreateInstance<T>();
