@@ -32,17 +32,19 @@ public class ELKNotifyJob : IJob
                     var utcToTime = DateTime.UtcNow;
 
                     var fromTime = utcFromTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
-                    var toTime = utcFromTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
-
+                    var toTime = utcToTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
+                    _logger.LogInformation($"[ELKNotifyJob] Do get path");
                     var exportResponse = await _httpClient.PostAsync<ELKExportReportResponse>(
                         string.Format(jobData.ReportUrl, fromTime, toTime),
+                        null,
                         new Dictionary<string, string>(){
                         { "kbn-xsrf", "true"},
                         { "Authorization", AuthBasicStr(jobData.ELKUser, jobData.ELKPassword)},
                         });
-
+                    
                     if (!string.IsNullOrEmpty(exportResponse?.path))
                     {
+                        _logger.LogInformation($"[ELKNotifyJob] Get data from {exportResponse?.path}");
                         try
                         {
                             var path = exportResponse.path;

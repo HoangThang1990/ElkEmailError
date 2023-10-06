@@ -10,7 +10,6 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("dotnet-EDP.Monitor.ElkAlert-01a4eb0c-438a-4094-ae12-abab3057fae7")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("EDP.Monitor.ElkAlert")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
