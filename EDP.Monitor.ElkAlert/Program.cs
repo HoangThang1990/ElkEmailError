@@ -6,6 +6,7 @@ using Quartz.Spi;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
+        services.AddSingleton<IEmailService, EmailService>();
         services.AddTransient<IHttpClient, StandardHttpClient>();
         services.AddTransient<ELKNotifyJob>();
         services.AddSingleton<IJobFactory, JobFactory>();

@@ -6,13 +6,16 @@ using Quartz;
 public class ELKNotifyJob : IJob
 {
     private readonly ILogger<ELKNotifyJob> _logger;
+    private readonly IEmailService _emailService;
     private readonly IHttpClient _httpClient;
 
     public ELKNotifyJob(ILogger<ELKNotifyJob> logger,
-            IHttpClient httpClient)
+            IHttpClient httpClient,
+            IEmailService emailService)
     {
         _httpClient = httpClient;
         _logger = logger;
+        _emailService = emailService;
     }
 
     public async Task Execute(IJobExecutionContext context)
@@ -101,7 +104,7 @@ public class ELKNotifyJob : IJob
                 try
                 {
                     _logger.LogInformation($"Send email of job {jobName} To: {jobData.EmailTo} - CC: {jobData.EmailCC} - Total rows: {count}");
-                    await EmailService.SendEmailWithAttachmentAsync(
+                    await _emailService.SendEmailWithAttachmentAsync(
                      jobData.EmailTo,
                      jobData.EmailCC,
                      subject,
@@ -125,7 +128,7 @@ public class ELKNotifyJob : IJob
                 try
                 {
                     _logger.LogInformation($"Send email of job {jobName} To: {jobData.EmailErrorJobTo} - Error: {downloadResponse.ReasonPhrase}");
-                    await EmailService.SendEmailWithAttachmentAsync(
+                    await _emailService.SendEmailWithAttachmentAsync(
                         jobData.EmailErrorJobTo,
                         string.Empty,
                         $"Lỗi download report {jobName}",
