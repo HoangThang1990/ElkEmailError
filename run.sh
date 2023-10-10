@@ -1,1 +1,1 @@
-docker run -v /etc/ssl/certs:/etc/ssl/certs -d elkemailserror:1.0
+docker run -v /etc/ssl/certs:/etc/ssl/certs -v /home/misa/app/appsettings.json:/app/appsettings.json -d elkemailserror:1.1 
