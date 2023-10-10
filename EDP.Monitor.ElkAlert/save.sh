@@ -1,1 +1,1 @@
-docker save -o elkemailserror.tar hnthang/elkemailserror:1.1
+docker save -o elkemailserror.tar elkemailserror:1.1
