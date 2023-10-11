@@ -31,14 +31,17 @@ public class ELKNotifyJob : IJob
                 var jobData = JsonConvert.DeserializeObject<ELKJobData>(jobDataStr);
                 if (jobData != null)
                 {
+                    var fromTime = DateTime.Now.AddHours(-jobData.Interval);
+                    var toTime = DateTime.Now;
+
                     var utcFromTime = DateTime.UtcNow.AddHours(-jobData.Interval);
                     var utcToTime = DateTime.UtcNow;
 
-                    var fromTime = utcFromTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
-                    var toTime = utcToTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
+                    var sFromTime = utcFromTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
+                    var sToTime = utcToTime.ToString("yyyy-MM-ddTHH:mm:ss.FFFZ");
                     _logger.LogInformation($"[ELKNotifyJob] Do get path");
                     var exportResponse = await _httpClient.PostAsync<ELKExportReportResponse>(
-                        string.Format(jobData.ReportUrl, fromTime, toTime),
+                        string.Format(jobData.ReportUrl, sFromTime, sToTime),
                         null,
                         new Dictionary<string, string>(){
                         { "kbn-xsrf", "true"},
@@ -51,7 +54,7 @@ public class ELKNotifyJob : IJob
                         try
                         {
                             var path = exportResponse.path;
-                            await DownloadAndSendEmailReport(jobName, jobData, path, utcFromTime, utcToTime);
+                            await DownloadAndSendEmailReport(jobName, jobData, path, fromTime, toTime);
                         }
                         catch (Exception ex)
                         {
@@ -94,8 +97,8 @@ public class ELKNotifyJob : IJob
 
             if (totalRow > 0)
             {
-                var fromTimeStr = fromTime.ToLocalTime().ToString(@"dd\/MM\/yyyy HH:mm");
-                var toTimeStr = toTime.ToLocalTime().ToString(@"dd\/MM\/yyyy HH:mm");
+                var fromTimeStr = fromTime.ToString(@"dd\/MM\/yyyy HH:mm");
+                var toTimeStr = toTime.ToString(@"dd\/MM\/yyyy HH:mm");
                 var count = totalRow - 1;
                 var subject = string.Format(jobData.Subject, fromTimeStr, toTimeStr, count);
                 var body = string.Format(jobData.Body, fromTime, toTimeStr, count, jobData.RealtimeReportUrl);
@@ -103,7 +106,7 @@ public class ELKNotifyJob : IJob
                 //Gửi mail
                 try
                 {
-                    _logger.LogInformation($"Send email of job {jobName} To: {jobData.EmailTo} - CC: {jobData.EmailCC} - Total rows: {count}");
+                    _logger.LogInformation($"Send email of job {jobName} FromTime: {fromTimeStr} - ToTime: {toTimeStr} - To: {jobData.EmailTo} - CC: {jobData.EmailCC} - Total rows: {count}");
                     await _emailService.SendEmailWithAttachmentAsync(
                      jobData.EmailTo,
                      jobData.EmailCC,
