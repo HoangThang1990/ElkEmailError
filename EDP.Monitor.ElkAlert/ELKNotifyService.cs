@@ -45,7 +45,7 @@ public class ELKNotifyService : IHostedService
                         var job = CreateJob(sc.Value, sc.Value.Name);
                         var trigger = CreateTrigger(sc.Value);
                         await Scheduler.ScheduleJob(job, trigger, cancellationToken);
-                        _logger.LogInformation($"Scheduler schedule '{sc.Value.Name}' success - Cron: {sc.Value.CronExpression}");
+                        _logger.LogInformation($"Scheduler start '{sc.Value.Name}' success at {DateTime.Now.ToString(@"dd\/MM\/yyyy HH:mm")} - Cron: {sc.Value.CronExpression}");
                     }
                     catch (Exception ex)
                     {
